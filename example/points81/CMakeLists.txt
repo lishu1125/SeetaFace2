@@ -21,6 +21,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/SeetaNet/include
     ${CMAKE_SOURCE_DIR}/FaceDetector/include
     ${CMAKE_SOURCE_DIR}/FaceLandmarker/include
+    ${CMAKE_BINARY_DIR}
     )
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${OpenCV_INCLUDE_DIRS}
@@ -32,6 +33,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${OpenCV_LIBS})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
+if(UNIX AND NOT ANDROID)
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_NAME ${PROJECT_NAME})
+endif()
 
 INSTALL(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"

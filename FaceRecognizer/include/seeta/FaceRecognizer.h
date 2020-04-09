@@ -6,6 +6,7 @@
 #define SEETA_FACERECOGNIZER_FACERECOGNIZER_H
 
 #include "CStruct.h"
+#include "Struct.h"
 
 namespace seeta
 {
@@ -16,8 +17,15 @@ namespace seeta
             /**
              * \brief load model
              * \param [in] setting model file
+             * \note if setting contains no model, construct as FaceRecognizer::FaceRecognizer().
              */
             SEETA_API explicit FaceRecognizer( const SeetaModelSetting &setting );
+
+            /**
+             * \brief default construct FR, only CropFace supported to crop 256x256 faces.
+             */
+            SEETA_API explicit FaceRecognizer();
+
             SEETA_API ~FaceRecognizer();
 
             /**
@@ -46,6 +54,11 @@ namespace seeta
              */
             SEETA_API bool CropFace( const SeetaImageData &image, const SeetaPointF *points, SeetaImageData &face );
 
+			seeta::ImageData CropFace(const SeetaImageData &image, const SeetaPointF *points) {
+				seeta::ImageData face(this->GetCropFaceWidth(), this->GetCropFaceHeight(), this->GetCropFaceChannels());
+				CropFace(image, points, face);
+				return face;
+			}
 
             /**
              * \brief get extracted feature size

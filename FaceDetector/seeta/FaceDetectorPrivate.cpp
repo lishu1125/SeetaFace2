@@ -62,7 +62,8 @@ public:
                           int64_t buffer_lenght48, SeetaDevice device, int gpuid );
 
     inline bool IsLegalImage( const SeetaImageData &image ) {
-        return ( image.channels == 3 && image.width > 0 && image.height > 0 &&
+        return ( ( image.channels == 3 || image.channels == 1 )
+                 && image.width > 0 && image.height > 0 &&
                  image.data != nullptr );
     }
 
@@ -118,7 +119,7 @@ public:
     bool stable_ = false;
     std::vector<Rect> preList_;
 
-    bool end2end_ = false;
+    bool end2end_ = true;
     struct
     {
         std::string version;
@@ -471,7 +472,7 @@ bool Impl::ResizeImage( const unsigned char *src_im, int src_width, int src_heig
         float lf_x_s = lfx_scl * n_x_d + crop_x;
         nx[n_x_d] = int( lf_x_s );
         if( nx[n_x_d] == src_width - 1 )
-            ny[n_x_d] -= 1;
+            nx[n_x_d] -= 1;
         wx[n_x_d] = lf_x_s - nx[n_x_d];
     }
 
